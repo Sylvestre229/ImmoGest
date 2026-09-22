@@ -19,7 +19,9 @@ fi
  /app/pocketbase serve \
   --http="0.0.0.0:${PORT}" \
   --dir="$PB_DATA_DIR" \
-  --migrationsDir="$PB_MIGRATIONS_DIR" &
+  --migrationsDir="$PB_MIGRATIONS_DIR" \
+  --publicDir=/app/pb_public \
+  --indexFallback &
 server_pid=$!
 
 until wget -q -O /dev/null "http://127.0.0.1:${PORT}/api/health"; do

@@ -44,6 +44,43 @@ pipeline de candidatures. Chaque enregistrement porte `DEMO` dans sa référence
 
 Pour tout retirer : ajoutez `--purge` à la même commande.
 
+## Déploiement
+
+### Railway (PocketBase)
+
+Le dépôt contient un `Dockerfile` et `railway.toml` pour déployer PocketBase
+sur Railway. Ajoutez les variables suivantes au service :
+
+```text
+PB_ADMIN_EMAIL=votre-adresse-administrateur
+PB_ADMIN_PASSWORD=un-mot-de-passe-fort
+```
+
+Ajoutez également un volume Railway monté sur `/app/pb_data`. Ce volume est
+indispensable pour conserver la base SQLite entre deux déploiements.
+
+### Vercel (React)
+
+Importez le dépôt GitHub dans Vercel et conservez les réglages par défaut :
+
+```text
+Framework preset: Vite
+Build command: npm run build
+Output directory: dist
+```
+
+L'URL PocketBase de production est définie dans `.env.production` avec
+`VITE_PB_URL`. Elle peut aussi être configurée dans Vercel comme variable
+d'environnement de production. Le fichier `vercel.json` permet aux routes
+React Router de fonctionner après un rechargement direct.
+
+### Lien unique Railway
+
+Le service Railway peut aussi servir directement le frontend et PocketBase
+depuis le même domaine. Dans ce mode, l'interface est disponible directement
+sur l'URL Railway, sans passer par Vercel. Le Dockerfile construit React puis
+PocketBase sert le dossier généré avec le fallback des routes.
+
 ---
 
 ## Organisation du code
